@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#101a24">
+  <title>Change history — Thank You Robot</title>
+  <meta name="description" content="Release notes and development history for Thank You Robot.">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    html{height:auto;overflow:auto}body{display:block;height:auto;min-height:100dvh;overflow:auto;padding:24px 20px;background:var(--bg)}
+    main{max-width:640px;margin:0 auto;padding-bottom:env(safe-area-inset-bottom)}
+    nav{position:sticky;top:0;background:var(--bg);padding:12px 0;display:flex;justify-content:space-between;align-items:center;gap:12px;z-index:1}
+    a{color:var(--amber);text-underline-offset:4px;display:inline-block;padding:10px 0;min-height:44px}
+    h1{font-size:36px;line-height:1.15;margin:24px 0 12px;letter-spacing:-.035em}
+    h2{font-size:23px;line-height:1.3;margin:6px 0 12px}
+    article{border-top:1px solid var(--line);padding:22px 0}
+    .release-meta{display:flex;justify-content:space-between;gap:12px;color:var(--muted);font-size:14px}
+    ul{padding-left:22px;margin:12px 0 0}li{margin:9px 0;line-height:1.5}
+    .history-note{font-size:14px;line-height:1.5;margin-bottom:24px}
+  </style>
+</head>
+<body>
+  <main>
+    <nav><a href="./">Back to game</a><span id="current"></span></nav>
+    <h1>Change history</h1>
+    <p class="history-note">Version numbers were added in 0.5.0. Earlier entries document the four previous published releases.</p>
+    <div id="releases"></div>
+  </main>
+  <script src="releases.js"></script>
+  <script>
+    document.getElementById('current').textContent='v'+RobotRelease.version;
+    const list=document.getElementById('releases');
+    for(const release of RobotRelease.entries){
+      const article=document.createElement('article');article.id='v'+release.version;
+      const meta=document.createElement('div');meta.className='release-meta';
+      const version=document.createElement('strong');version.textContent='v'+release.version;
+      const date=document.createElement('time');date.dateTime=release.date;date.textContent=release.date;
+      meta.append(version,date);
+      const title=document.createElement('h2');title.textContent=release.title;
+      const changes=document.createElement('ul');
+      for(const text of release.changes){const item=document.createElement('li');item.textContent=text;changes.append(item)}
+      article.append(meta,title,changes);list.append(article);
+    }
+  </script>
+</body>
+</html>

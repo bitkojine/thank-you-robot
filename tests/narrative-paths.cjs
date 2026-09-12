@@ -13,6 +13,8 @@ const box={console,assert,RobotAudio:{button:()=>'',mood(){},resume(){},pause(){
   requestAnimationFrame:()=>1,cancelAnimationFrame(){},navigator:{},location:{href:'https://example.test'},
   fire:n=>listeners[n]?.(),writeSave:s=>{saved=s}};
 vm.createContext(box);
+vm.runInContext(fs.readFileSync(path.join(__dirname,'../dist/releases.js'),'utf8'),box);
+box.RobotRelease=box.window.RobotRelease;
 vm.runInContext(fs.readFileSync(path.join(__dirname,'../dist/narrative.js'),'utf8'),box);
 box.RobotStory=box.window.RobotStory;
 vm.runInContext(fs.readFileSync(path.join(__dirname,'../dist/game.js'),'utf8'),box);

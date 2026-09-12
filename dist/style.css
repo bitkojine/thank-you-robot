@@ -3,6 +3,10 @@
 
 .top-controls{display:flex;gap:6px;align-items:center}.top .brand{font-size:12px;flex-shrink:0}.top .quiet{padding:8px 10px;font-size:12px;min-height:44px}.sound[aria-pressed="true"]{color:var(--amber);border-color:#82704c}@media(max-width:360px){.top{flex-wrap:wrap;gap:8px}}
 
+.intro-controls{justify-content:flex-end}
+.release-link{display:inline-flex;align-items:center;min-height:44px;color:var(--muted);text-underline-offset:3px;font-size:14px}
+.release-link:hover{color:var(--amber)}
+.release-link:focus-visible{outline:2px solid var(--amber);outline-offset:3px}
 /* The game is a single viewport, including browser chrome and safe areas. */
 html{height:100%;overflow:hidden}
 body{height:100dvh;overflow:hidden;padding:12px;display:flex;align-items:center;justify-content:center}
