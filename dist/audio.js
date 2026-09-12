@@ -81,7 +81,11 @@
     }catch{failed=true;enabled=false;silence();}
     refresh();
   }
-  function refresh(){document.querySelectorAll('[data-sound]').forEach(b=>{b.textContent=failed?'Sound unavailable':enabled?'♪ Sound on':'♪ Sound off';b.setAttribute('aria-pressed',String(enabled));b.setAttribute('aria-label',failed?'Sound unavailable in this browser':enabled?'Mute music and sounds':'Unmute music and sounds');b.disabled=failed})}
+  function soundLabel(){
+    const key=failed?'soundUnavailable':enabled?'soundOn':'soundOff';
+    return window.RobotI18n?.t(key)||({soundUnavailable:'Sound unavailable',soundOn:'♪ Sound on',soundOff:'♪ Sound off'})[key];
+  }
+  function refresh(){document.querySelectorAll('[data-sound]').forEach(b=>{const label=soundLabel();b.textContent=label;b.setAttribute('aria-pressed',String(enabled));b.setAttribute('aria-label',label);b.disabled=failed})}
   function setMood(value){
     if(!timer){mood=value;pendingMood=null;return}
     pendingMood=value===mood?null:value;
@@ -99,7 +103,7 @@
   window.addEventListener('pagehide',silence);
   document.addEventListener('pointerdown',e=>{if(enabled&&!blocked&&!document.hidden&&ctx?.state!=='running'&&!e.target.closest('[data-sound]'))start()});
   window.RobotAudio={
-    button:()=>{const label=window.RobotI18n?.t(enabled?'soundOn':'soundOff')||`♪ Sound ${enabled?'on':'off'}`;return `<button class="quiet sound" data-sound aria-pressed="${enabled}" aria-label="${label}">${label}</button>`},
+    button:()=>{const label=soundLabel();return `<button class="quiet sound" data-sound aria-pressed="${enabled}" aria-label="${label}" ${failed?'disabled':''}>${label}</button>`},
     mood:setMood,cue,
     pause:()=>{blocked=true;silence()},
     resume:()=>{blocked=false;if(enabled&&!document.hidden)start()},

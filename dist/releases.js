@@ -1,6 +1,9 @@
 // Newest first. One source for the visible version and public release history.
 window.RobotRelease = {
   entries: [
+    { version: '0.9.0', date: '2026-09-13', title: 'Sound button language fix', changes: [
+      'Keep the sound button and its accessible label in the selected language after toggling audio, including when sound is unavailable.'
+    ]},
     { version: '0.8.0', date: '2026-09-13', title: 'Keep navigation inside the game', changes: [
       'Keep the game path on asset redirects, including the change-history page and return link.'
     ]},
