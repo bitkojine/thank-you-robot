@@ -9,7 +9,7 @@ function node(key){
 }
 const box={console,assert,RobotAudio:{button:()=>'',mood(){},resume(){},pause(){},cue(){}},
   document:{hidden:false,querySelector:node,querySelectorAll:()=>[],addEventListener:(n,f)=>listeners[n]=f},
-  window:{addEventListener:(n,f)=>listeners[n]=f},localStorage:{getItem:()=>saved,setItem:(_,s)=>saved=s},
+  window:{addEventListener:(n,f)=>listeners[n]=f},localStorage:{getItem:k=>k==='thankyourobot-language-v1'?(process.env.ROBOT_TEST_LANGUAGE||'en'):saved,setItem:(_,s)=>saved=s},
   requestAnimationFrame:()=>1,cancelAnimationFrame(){},navigator:{},location:{href:'https://example.test'},
   fire:n=>listeners[n]?.(),writeSave:s=>{saved=s}};
 vm.createContext(box);
@@ -45,12 +45,12 @@ for(let combination=0;combination<81;combination++){
   assert.equal(state.thanks,omitted===-1?totalServices:totalServices-1);
   assert.equal(state.misses.length,omitted===-1?0:1);
   if(omitted===-1){
-   assert.equal(state.phase,'judgment');assert(app.innerHTML.includes('permanent'));
+   assert.equal(state.phase,'judgment');assert(app.innerHTML.includes(T('judgmentCopy')));
    $('#continue').onclick();assert.equal(state.phase,'old');assert(app.innerHTML.includes(RobotStory.memory(state)));
    $('#continue').onclick();assert.equal(state.phase,'birthday');
    $('#continue').onclick();assert.equal(state.phase,'end');assert(app.innerHTML.includes('200'));assert(app.innerHTML.includes(RobotStory.goodbye(state)));
   }else{
-   assert.equal(state.phase,'end');assert(app.innerHTML.includes('EXEMPTION DENIED'));assert(app.innerHTML.includes(RobotStory.lastHuman(state)));
+   assert.equal(state.phase,'end');assert(app.innerHTML.includes(T('denied')));assert(app.innerHTML.includes(RobotStory.lastHuman(state)));
   }
   assert(!app.innerHTML.includes('undefined'));assert(!app.innerHTML.includes('NaN'));
   runs++;

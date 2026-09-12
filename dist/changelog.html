@@ -22,7 +22,7 @@
 </head>
 <body>
   <main>
-    <nav><a href="./">Back to game</a><span id="current"></span></nav>
+    <nav><span id="language"></span><a href="./">Back to game</a><span id="current"></span></nav>
     <h1>Change history</h1>
     <p class="history-note">From 0.9.1, compatible fixes increment the last number (0.9.1 → 0.9.2). New features increment the middle number (0.9.2 → 0.10.0). We remain in initial development. See <a href="https://semver.org/spec/v2.0.0.html">Semantic Versioning 2.0.0</a>.</p>
     <p class="history-note">Earlier labels are preserved. The fixes labeled 0.3.0, 0.7.0, 0.8.0 and 0.9.0 should have used patch increments. Version labels 0.1.0–0.4.0 were added retrospectively in 0.5.0; the 0.7.0 and 0.8.0 entries were committed together. Git history does not establish a separate deployment for each entry.</p>
@@ -40,11 +40,34 @@
     </details>
     <div id="releases"></div>
   </main>
-  <script src="releases.js"></script>
+  <script src="i18n.js"></script><script src="releases.js"></script>
   <script>
+    const translatedNodes=[...document.querySelectorAll('main > h1, main > .history-note:not(details), details summary, details li, details p, details a')];
+    const english=translatedNodes.map(n=>n.innerHTML);
+    const lithuanian=[
+      'Pakeitimų istorija',
+      'Nuo 0.9.1 suderinamiems taisymams didinamas paskutinis skaičius (0.9.1 → 0.9.2). Naujoms funkcijoms – vidurinis (0.9.2 → 0.10.0). Žaidimas dar kuriamas. Žr. <a href="https://semver.org/spec/v2.0.0.html">semantinio versijavimo 2.0.0 taisykles (anglų kalba)</a>.',
+      'Ankstesni numeriai išsaugoti. Taisymams, pažymėtiems 0.3.0, 0.7.0, 0.8.0 ir 0.9.0, turėjo būti didinamas paskutinis skaičius. Numeriai 0.1.0–0.4.0 priskirti atgaline data, kuriant 0.5.0; 0.7.0 ir 0.8.0 įrašai išsaugoti kartu. Git istorija nepatvirtina atskiro kiekvieno įrašo paskelbimo.',
+      'Anksčiau nepaminėti kūrimo pakeitimai',
+      'Rugsėjo 13 d.: pridėta ir pataisyta saugyklos bei paskelbimo dokumentacija (39a14d6, 01aa844).',
+      'Rugsėjo 13 d.: pridėtas Cloudflare talpinimas ir pataisyta suderinamumo data (341753c, 0412e9b).',
+      'Rugsėjo 13 d.: išversti vertinimo, ilgo gyvenimo ir gimtadienio tekstai (38ddd88). Ankstesnėje dvikalbėje versijoje dar buvo spragų.',
+      'Rugsėjo 13 d.: vietiniai paskelbimo duomenys nebeįtraukiami į Git (d49d566).',
+      'Rugsėjo 13 d.: pridėtas pirmasis peradresavimas į adresą su pasviruoju brūkšniu gale (eec5da5), vėliau užbaigtas toliau aprašytais taisymais.',
+      'Šie kodo įrašai neturėjo atskirų žaidimo versijų numerių. Dokumentacijos ir vietinių kūrimo įrankių pakeitimams atskiros žaidimo versijos nereikia.',
+      'Visų kodo įrašų peržiūra ir būsimos versijavimo taisyklės (anglų kalba)'
+    ];
+    function renderHistory(){
+    const lt=RobotI18n.get()==='lt';
+    translatedNodes.forEach((node,i)=>node.innerHTML=(lt?lithuanian:english)[i]);
+    document.querySelector('nav a').textContent=RobotI18n.t('back');
+    document.getElementById('language').innerHTML=RobotI18n.button();
+    document.title=RobotI18n.t('history')+' — '+RobotI18n.t('title');
     document.getElementById('current').textContent='v'+RobotRelease.version;
     const list=document.getElementById('releases');
-    for(const release of RobotRelease.entries){
+    list.innerHTML='';
+    for(const original of RobotRelease.entries){
+      const release=RobotI18n.get()==='lt'?{...original,...original.lt}:original;
       const article=document.createElement('article');article.id='v'+release.version;
       const meta=document.createElement('div');meta.className='release-meta';
       const version=document.createElement('strong');version.textContent='v'+release.version;
@@ -55,6 +78,8 @@
       for(const text of release.changes){const item=document.createElement('li');item.textContent=text;changes.append(item)}
       article.append(meta,title,changes);list.append(article);
     }
+    }
+    RobotI18n.onChange(renderHistory);renderHistory();
   </script>
 </body>
 </html>
