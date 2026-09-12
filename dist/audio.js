@@ -2,7 +2,7 @@
 (() => {
   'use strict';
   let ctx, master, music, effects, reverb, timer, enabled=false, blocked=false;
-  let mood='intro', step=0, next=0, generation=0, failed=false;
+  let mood='intro', pendingMood=null, tempo=64, step=0, next=0, generation=0, failed=false;
   const voices=new Set(), envelopes=new Set();
   const scores={
     intro:{bpm:64,chords:[[50,57,61,66],[47,54,59,62],[43,50,57,59],[45,52,57,61]],melody:[74,null,69,73,null,66,69,null],pad:.035},
@@ -48,9 +48,13 @@
   }
   function schedule(){
     if(!enabled||blocked||document.hidden||ctx.state!=='running')return;
-    const s=scores[mood]||scores.intro,beat=60/s.bpm;
     if(next<ctx.currentTime-.2)next=ctx.currentTime+.05;
     while(next<ctx.currentTime+.25){
+      // Change harmony at the next phrase boundary; let sounding notes decay.
+      if(step%8===0&&pendingMood!==null){mood=pendingMood;pendingMood=null}
+      const s=scores[mood]||scores.intro;
+      tempo+=(s.bpm-tempo)*.2;
+      const beat=60/tempo;
       const chord=s.chords[Math.floor(step/8)%s.chords.length],position=step%8;
       if(position===0&&s.pad)chord.forEach(n=>note(n,next,beat*7.8,s.pad,'pad'));
       const pitch=s.melody[position];if(pitch!==null)note(pitch,next,3.6,mood==='birthday'?.095:.07);
@@ -67,6 +71,7 @@
     const token=++generation;setTimeout(()=>{if(token===generation&&(!enabled||blocked||document.hidden))ctx.suspend().catch(()=>{})},160);
   }
   async function start(){
+    if(timer&&ctx?.state==='running'){refresh();return}
     const token=++generation;
     try{
       setup();await ctx.resume();
@@ -77,8 +82,10 @@
     refresh();
   }
   function refresh(){document.querySelectorAll('[data-sound]').forEach(b=>{b.textContent=failed?'Sound unavailable':enabled?'♪ Sound on':'♪ Sound off';b.setAttribute('aria-pressed',String(enabled));b.setAttribute('aria-label',failed?'Sound unavailable in this browser':enabled?'Mute music and sounds':'Unmute music and sounds');b.disabled=failed})}
-  function release(){envelopes.forEach(amp=>{const t=ctx.currentTime;if(amp.gain.cancelAndHoldAtTime)amp.gain.cancelAndHoldAtTime(t);else amp.gain.cancelScheduledValues(t);amp.gain.setTargetAtTime(0,t,.04)});voices.forEach(o=>{try{o.stop(ctx.currentTime+.18)}catch{}})}
-  function setMood(value){if(mood===value)return;mood=value;step=0;if(ctx){release();next=ctx.currentTime+.2;}schedule()}
+  function setMood(value){
+    if(!timer){mood=value;pendingMood=null;return}
+    pendingMood=value===mood?null:value;
+  }
   function cue(type,index=0){
     if(!ctx||!enabled||blocked||document.hidden||ctx.state!=='running')return;
     const t=ctx.currentTime+.01;
