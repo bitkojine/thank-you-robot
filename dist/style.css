@@ -45,3 +45,24 @@ h2{font-size:28px}
 @media(max-width:649px){body{padding:0}#app{max-height:none;border:0;border-radius:0}.screen,.intro{padding:max(12px,env(safe-area-inset-top)) 16px max(12px,env(safe-area-inset-bottom))}}
 @media(max-height:700px){.top{margin-bottom:8px}.progress{margin-bottom:10px}h2{font-size:25px}.story{margin:8px 0 10px}.machine{min-height:94px;padding:10px}.machine .symbol{font-size:20px}.dialogue{margin-top:10px}.intro .hero{height:17dvh}.ending-art{height:70px}.end-copy{margin:10px 0}.interlude h2{margin:8px 0}.receipt{margin:8px 0;padding:6px 0}.tiny{margin-top:6px}}
 @media(orientation:landscape) and (max-height:600px){#app{max-width:900px}.screen{padding:10px 18px}.machines{grid-template-columns:repeat(4,1fr)}.intro .hero,.ending-art{display:none}.intro h1{font-size:38px}.intro-copy{font-size:16px}.intro .bottom{max-width:500px;width:100%;align-self:center}.top{margin-bottom:6px}.story{margin:6px 0}.dialogue p{display:inline}.dialogue .choices{margin-top:5px}.interlude h2{font-size:28px}.end-copy{margin:8px 0}.big-age{font-size:52px}.receipt{display:grid;grid-template-columns:1fr 1fr;column-gap:24px}.screen:has(.big-age) .bottom{display:flex;flex-wrap:wrap;gap:8px}.screen:has(.big-age) .bottom button{flex:1;margin:0}.screen:has(.big-age) .tiny{width:100%}}
+
+/* Painted story panels and a shared object atlas keep downloads small. */
+.world-art{height:clamp(100px,19dvh,180px);position:relative;overflow:hidden;border-radius:10px;margin:12px 0 0;flex-shrink:0;background:#142331}
+.world-art>div{position:absolute;width:100%;aspect-ratio:1;top:50%;transform:translateY(-50%);background-image:url('art/world.jpg');background-size:300% 200%}
+.world-0>div{background-position:0 0}.world-1>div{background-position:50% 0}.world-2>div{background-position:100% 0}.world-3>div{background-position:0 100%}.world-4>div{background-position:50% 100%}.world-5>div{background-position:100% 100%}
+.machine-art{display:block;float:left;width:64px;height:64px;margin:0 10px 0 -4px;background-image:url('art/machines.jpg');background-size:400% 400%;border-radius:8px;flex-shrink:0}
+.illustrated-play .machine{min-height:104px;padding:10px 8px}
+.illustrated-play .machine strong{font-size:15px;line-height:1.2}
+.illustrated-play .machine small{font-size:13px;line-height:1.25}
+.illustrated-play .machine.ready{box-shadow:0 0 0 2px var(--amber),0 0 20px #ffc16c25}
+.illustrated-play .machine.missed .machine-art{filter:grayscale(1)}
+.illustrated-play .machines:has(>button:only-child){grid-template-columns:1fr}
+.illustrated-play .machines:has(>button:only-child) .machine-art{width:84px;height:84px}
+.illustrated-play .machines:has(>button:only-child) .machine strong{font-size:20px;margin-top:10px}
+.illustrated-play .top{margin-bottom:8px}.illustrated-play .progress{margin-bottom:8px}
+.illustrated-play .story{margin:8px 0 10px}.illustrated-play .hint{font-size:13px}
+.interlude .world-art{height:clamp(140px,25dvh,240px)}
+@media(max-width:400px){.machine-art{width:50px;height:50px;margin-right:6px}.illustrated-play .machine{min-height:100px}}
+@media(max-height:720px){.illustrated-play .world-art{height:90px}.illustrated-play .dialogue{margin-top:8px}.illustrated-play .machine{min-height:90px}.illustrated-play .toast{min-height:16px;font-size:13px}.illustrated-play .bottom{padding-top:4px}}
+@media(orientation:landscape) and (max-height:600px){.illustrated-play .world-art{height:65px}.interlude .world-art{height:80px}.machine-art{width:44px;height:44px}}
+@media(max-height:720px){.illustrated-play .primary{min-height:54px}}

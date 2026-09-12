@@ -2,13 +2,13 @@
 // and enlarged text without clipping controls or introducing a scroll surface.
 (() => {
   const root=document.getElementById('app');
-  let frame, previous="";
+  let frame, previous="", previousScreen=null;
   function fit(){
     cancelAnimationFrame(frame);
     frame=requestAnimationFrame(()=>{
       const screen=root.querySelector('.screen');if(!screen)return;
       const signature=root.clientWidth+'x'+root.clientHeight+root.textContent;
-      if(signature===previous)return;previous=signature;
+      if(signature===previous&&screen===previousScreen)return;previous=signature;previousScreen=screen;
       screen.style.transform='';screen.style.width='100%';
       screen.style.minHeight=root.clientHeight+'px';
       let scale=1;
