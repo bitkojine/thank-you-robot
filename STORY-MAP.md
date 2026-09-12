@@ -86,7 +86,7 @@ The engineer's position is not a morality test. Agreeing with the engineer canno
 
 For every winning row, the earlier Eli encounter independently chooses one of three age-112 memories: listening, looking at the phone, or silence. Therefore there are **nine winning epilogue combinations**, all with the same lifespan and global outcome.
 
-For every losing row, one of **18 first omissions** supplies the rejection reason. Multiple omissions additionally vary the counts. There is no rescue-Eli ending, save-humanity ending, resistance ending, forgiveness ending, or refusal-of-exemption ending implemented. Those are absent mechanics, not undiscovered solutions.
+For every losing row, one of **15 first omissions** supplies the rejection reason. Multiple omissions additionally vary the counts. Version 0.6 introduces the first two chapters gradually (one machine, then two) while preserving the same five-chapter ending logic. There is no rescue-Eli ending, save-humanity ending, resistance ending, forgiveness ending, or refusal-of-exemption ending implemented. Those are absent mechanics, not undiscovered solutions.
 
 The fixed birthday scene is followed by an explicit statement that the player's life ends peacefully at 200. The game no longer implies the protagonist dies merely because they tapped the final thank-you.
 
@@ -136,7 +136,7 @@ Our engineering application of those practices is a route matrix plus invariants
 
 ## Validation and limits
 
-The checked-in test `tests/narrative-paths.cjs` drives the real game functions with a lightweight simulated document and clock. It runs **3,078 complete routes**: all 81 human histories × perfect run or each of 18 single omissions × both timing modes. It walks the epilogue buttons, checks save restoration, and verifies that only relevant choices determine memories. It separately checks the outcome predicate for all **262,144 omission masks**.
+The checked-in test `tests/narrative-paths.cjs` drives the real game functions with a lightweight simulated document and clock. It runs **2,592 complete routes**: all 81 human histories × perfect run or each of 15 single omissions × both timing modes. It walks the epilogue buttons, checks save restoration, and verifies that only relevant choices determine memories. It separately checks the outcome predicate for all **32,768 omission masks**.
 
 Additional checks cover duplicate thanks, premature scene advances, paused actions, start-screen/background transitions, malformed saves, impossible epilogue saves, and legacy count repair.
 

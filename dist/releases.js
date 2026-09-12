@@ -1,6 +1,11 @@
 // Newest first. One source for the visible version and public release history.
 window.RobotRelease = {
   entries: [
+    { version: '0.6.0', date: '2026-09-12', title: 'Bilingual onboarding', changes: [
+      'Added English and Lithuanian throughout the game, with a language switch available on every screen.',
+      'Reduced the first chapters to introduce one machine, then two, before the full four-machine rhythm.',
+      'Rewrote the story in plain language so the human cost and philosophical question are easier to follow.'
+    ]},
     { version: '0.5.0', date: '2026-09-12', title: 'Simpler start screen', changes: [
       'Removed slogans and the duplicate game title from the start and restart screen.',
       'Replaced promotional copy with a short instruction. Kept the small title during play.',

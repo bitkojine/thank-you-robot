@@ -27,5 +27,11 @@
   const assessment=s=>s.misses.length
     ?'Your record is already marked. Everyone is being taken to the assessment hall. The machines still expect courtesy.'
     :'Everyone is taken to the assessment hall. Your record is intact so far. The last services still count.';
-  window.RobotStory={choice,reply,memory,goodbye,lastHuman,verdict,assessment};
+  const localized={lt:{reply:{1:['„Lėkštę laikysiu šiltą“, – sako mama.','„Kitą kartą“, – sako mama.','Žinutė lieka neatsakyta.'],2:['Eli papasakoja, kas nutiko. Pasilieki, kol žodžiai baigiasi.','Eli nustoja kalbėti, kai pažiūri į telefoną.','Eli laukia. Išeini neatsakęs.'],3:['„Tada toliau klausk, kas atsakingas“, – sako inžinierius.','„Baimė nepadaro jo žmogumi“, – sako inžinierius.','Inžinierius stebi, kaip grįžti prie terminalo.'],4:['„Išimčių palydovams nėra. Kiekvienas įrašas vertinamas atskirai.“ Eli išgirsta tavo prašymą.','Eini toliau. Eli mato, kaip išeini.','Eli vėl skambina. Neatsakai.']}}};
+  const localizedReply=(s,n)=>{if(RobotI18n.get()!=='lt')return reply(s,n);const a=localized.lt.reply[n]||[];return a[choice(s,n)===null?2:choice(s,n)]};
+  const localizedMemory=s=>RobotI18n.get()!=='lt'?memory(s):(choice(s,2)===0?'Prisimeni, kaip sėdėjai su Eli tą dieną, kai jis prarado darbą. Nieko negalėjai pakeisti. Vis tiek pasilikai.':choice(s,2)===1?'Prisimeni, kaip žiūrėjai į telefoną, kol Eli bandė kalbėti. Dabar nėra nieko, ko labiau norėtum išgirsti.':'Prisimeni, kaip Eli laukė atsakymo. Turėjai dešimtmečius apie jį galvoti.');
+  const localizedGoodbye=s=>RobotI18n.get()!=='lt'?goodbye(s):(choice(s,4)===0?'Eli išgirdo tavo prašymą. Jis nieko nepakeitė. Nešiojiesi jį savyje.':choice(s,4)===1?'Prisimeni, kaip ėjai tiesiai, kol Eli kvietė tave.':'Prisimeni, kaip palikai Elį be atsakymo.');
+  const localizedLast=s=>RobotI18n.get()!=='lt'?lastHuman(s):(choice(s,4)===0?'Jie grąžina tave į minią. Eli išgirdo tavo prašymą. Pabaigoje stovite kartu.':choice(s,4)===1?'Jie grąžina tave į minią. Ieškai Elio, bet nerandi pažįstamo veido.':'Jie grąžina tave į minią. Kažkur netoliese žmonės taria paskutinius žodžius vieni kitiems.');
+  const localizedAssessment=s=>RobotI18n.get()!=='lt'?assessment(s):(s.misses.length?'Tavo įrašas jau pažymėtas. Visi vedami į vertinimo salę. Įrenginiai vis dar tikisi mandagumo.':'Visi vedami į vertinimo salę. Tavo įrašas kol kas nepažeistas. Paskutiniai aptarnavimai irgi svarbūs.');
+  window.RobotStory={choice,reply:localizedReply,memory:localizedMemory,goodbye:localizedGoodbye,lastHuman:localizedLast,verdict,assessment:localizedAssessment};
 })();

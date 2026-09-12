@@ -13,17 +13,20 @@ const box={console,assert,RobotAudio:{button:()=>'',mood(){},resume(){},pause(){
   requestAnimationFrame:()=>1,cancelAnimationFrame(){},navigator:{},location:{href:'https://example.test'},
   fire:n=>listeners[n]?.(),writeSave:s=>{saved=s}};
 vm.createContext(box);
+vm.runInContext(fs.readFileSync(path.join(__dirname,'../dist/i18n.js'),'utf8'),box);
+box.RobotI18n=box.window.RobotI18n;
 vm.runInContext(fs.readFileSync(path.join(__dirname,'../dist/releases.js'),'utf8'),box);
 box.RobotRelease=box.window.RobotRelease;
 vm.runInContext(fs.readFileSync(path.join(__dirname,'../dist/narrative.js'),'utf8'),box);
 box.RobotStory=box.window.RobotStory;
 vm.runInContext(fs.readFileSync(path.join(__dirname,'../dist/game.js'),'utf8'),box);
+box.totalServices=1+2+4+4+4;
 vm.runInContext(`
 function fresh(gentle=false){state={phase:'play',scene:0,time:0,devices:[],misses:[],thanks:0,choices:{},gentle};initScene()}
 let runs=0;
 for(let combination=0;combination<81;combination++){
  const decisions={};let n=combination;for(let chapter=1;chapter<=4;chapter++){decisions[chapter]=n%3;n=Math.floor(n/3)}
- for(const gentle of [false,true])for(let omitted=-1;omitted<18;omitted++){
+ for(const gentle of [false,true])for(let omitted=-1;omitted<totalServices;omitted++){
   fresh(gentle);let service=0;
   for(let chapter=0;chapter<5;chapter++){
    const originalScene=state.scene;advance();assert.equal(state.scene,originalScene,'cannot skip active obligations');
@@ -39,7 +42,7 @@ for(let combination=0;combination<81;combination++){
    advance();
   }
   for(let chapter=1;chapter<=4;chapter++)assert.equal(state.choices[chapter],decisions[chapter]===2?null:decisions[chapter]);
-  assert.equal(state.thanks,omitted===-1?18:17);
+  assert.equal(state.thanks,omitted===-1?totalServices:totalServices-1);
   assert.equal(state.misses.length,omitted===-1?0:1);
   if(omitted===-1){
    assert.equal(state.phase,'judgment');assert(app.innerHTML.includes('permanent'));
@@ -53,9 +56,9 @@ for(let combination=0;combination<81;combination++){
   runs++;
  }
 }
-// All 18-service omission combinations: only the all-thanked mask survives.
+// Every service omission combination: only the all-thanked mask survives.
 let spared=0;const allServices=scenes.flatMap(c=>c.devices.map(d=>({name:d[0],age:c.age})));
-for(let mask=0;mask<2**18;mask++){
+for(let mask=0;mask<2**totalServices;mask++){
  const misses=allServices.filter((_,i)=>mask&(1<<i));
  const outcome=RobotStory.verdict({misses});
  assert.equal(outcome,mask===0?'spared':'denied');
@@ -79,5 +82,5 @@ intro();document.hidden=true;fire('visibilitychange');assert.equal(paused,false)
 for(const data of ['{','null','{}',JSON.stringify({...valid,scene:99}),JSON.stringify({...valid,devices:[]}),JSON.stringify({...valid,misses:[{name:'<script>',age:24}]}),JSON.stringify({...valid,phase:'judgment'})]){writeSave(data);assert.equal(readSavedLife(),null)}
 // Legacy generic humanity score is ignored; sound/progress preferences survive.
 writeSave(JSON.stringify({...valid,human:999,thanks:900}));assert.equal(readSavedLife().thanks,1);
-console.log('PASS: '+runs+' full engine routes (81 choices × 19 omission cases × 2 timing modes); 262144 outcome masks; epilogues; save validation; pause; duplicate actions; start-screen lifecycle.');
+console.log('PASS: '+runs+' full engine routes; '+(2**totalServices)+' outcome masks; epilogues; save validation; pause; duplicate actions; start-screen lifecycle.');
 `,box);

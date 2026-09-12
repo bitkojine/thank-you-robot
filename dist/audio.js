@@ -99,7 +99,7 @@
   window.addEventListener('pagehide',silence);
   document.addEventListener('pointerdown',e=>{if(enabled&&!blocked&&!document.hidden&&ctx?.state!=='running'&&!e.target.closest('[data-sound]'))start()});
   window.RobotAudio={
-    button:()=>`<button class="quiet sound" data-sound aria-pressed="${enabled}" aria-label="${enabled?'Mute':'Unmute'} music and sounds">♪ Sound ${enabled?'on':'off'}</button>`,
+    button:()=>{const label=window.RobotI18n?.t(enabled?'soundOn':'soundOff')||`♪ Sound ${enabled?'on':'off'}`;return `<button class="quiet sound" data-sound aria-pressed="${enabled}" aria-label="${label}">${label}</button>`},
     mood:setMood,cue,
     pause:()=>{blocked=true;silence()},
     resume:()=>{blocked=false;if(enabled&&!document.hidden)start()},
