@@ -4,11 +4,11 @@ A short mobile browser game about courtesy, survival, and being the exception.
 
 ## Local preview
 
-Open  in a browser, or serve the  folder with any static file server.
+Open dist/index.html in a browser, or serve the dist folder with any static file server.
 
 ## Publishing
 
-The publish directory is . For , deploy this directory behind a path route on the domain host. Keep the game repository separate from the main site, then route that path to this static deployment.
+The publish directory is dist. For RobertasRudys.com/thank-you-robot, deploy this directory behind a path route on the domain host. Keep the game repository separate from the main site, then route that path to this static deployment.
 
 The game stores progress and language preference locally in the player browser. Audio starts muted and can be enabled by the player.
 
