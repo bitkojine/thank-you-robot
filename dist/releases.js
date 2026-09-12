@@ -1,6 +1,11 @@
 // Newest first. One source for the visible version and public release history.
 window.RobotRelease = {
   entries: [
+    { version: '0.9.1', date: '2026-09-13', title: 'Correct release history and versioning', changes: [
+      'Use patch increments for compatible bug fixes and minor increments for new features.',
+      'Audit the full Git history, record previously omitted hosting and translation changes, and distinguish commits from deployments.',
+      'Preserve historical version labels and explain earlier oversized version bumps.'
+    ]},
     { version: '0.9.0', date: '2026-09-13', title: 'Sound button language fix', changes: [
       'Keep the sound button and its accessible label in the selected language after toggling audio, including when sound is unavailable.'
     ]},
