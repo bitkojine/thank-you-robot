@@ -1,7 +1,7 @@
 {
   "name": "thank-you-robot",
   "main": "src/worker.js",
-  "compatibility_date": "2026-09-13",
+  "compatibility_date": "2026-09-12",
   "assets": {
     "directory": "./dist",
     "binding": "ASSETS",
