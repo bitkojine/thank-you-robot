@@ -1,6 +1,13 @@
 // Newest first. One source for the visible version and public release history.
 window.RobotRelease = {
   entries: [
+    { version: '0.8.0', date: '2026-09-13', title: 'Keep navigation inside the game', changes: [
+      'Keep the game path on asset redirects, including the change-history page and return link.'
+    ]},
+    { version: '0.7.0', date: '2026-09-13', title: 'Custom-domain routing fix', changes: [
+      'Run the path redirect before serving files so the game opens with or without a trailing slash.',
+      'Return missing-file errors instead of substituting the game page for missing scripts.'
+    ]},
     { version: '0.6.0', date: '2026-09-12', title: 'Bilingual onboarding', changes: [
       'Added English and Lithuanian throughout the game, with a language switch available on every screen.',
       'Reduced the first chapters to introduce one machine, then two, before the full four-machine rhythm.',
